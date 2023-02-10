@@ -1,10 +1,11 @@
-<div class="container">
-  <div id="map" style="height: 500px"></div>
-  <label class="form-label">Выберите объект:</label>
+<div class="container d-flex flex-column pb-4" style="height: 100dvh">
+  <div id="map" class="h-100"></div>
+  <div class="d-flex gap-3 align-items-baseline justify-content-between">
+    <label class="form-label mt-2 flex-shrink-0">Выберите объект:</label>
+    <div title="{{selectedObject.objectData.coords }}" class="rounded-pill text-secondary bg-light px-3 mt-2 text-truncate "
+         *ngIf="selectedObject">{{selectedObject.objectData.coords }}</div>
+  </div>
   <select class="form-select" [(ngModel)]="selectedObject" (ngModelChange)="onSelect()">
     <option [ngValue]="object" *ngFor="let object of objectsOptions">{{object.objectData.id}}</option>
   </select>
-  <div *ngIf="selectedObject" class="d-flex gap-1">
-    <div class="rounded-pill text-secondary bg-light px-3 mt-2 text-truncate">{{selectedObject.objectData.coords}}</div>
-  </div>
 </div>
