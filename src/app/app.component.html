@@ -1,8 +1,10 @@
 <div class="container">
   <div id="map" style="height: 500px"></div>
   <label class="form-label">Выберите объект:</label>
-  <select class="form-select" name="" id="">
-    <option></option>
-    <option></option>
+  <select class="form-select" [(ngModel)]="selectedObject" (ngModelChange)="onSelect()">
+    <option [ngValue]="object" *ngFor="let object of objectsOptions">{{object.objectData.id}}</option>
   </select>
+  <div *ngIf="selectedObject" class="d-flex gap-1">
+    <div class="rounded-pill text-secondary bg-light px-3 py-1 mt-2 text-truncate">{{selectedObject.objectData.coords}}</div>
+  </div>
 </div>
