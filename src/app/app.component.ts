@@ -38,8 +38,6 @@ export class AppComponent {
       this.objectsOptions.push({objectData: objectData, leafObject: leafObjectInstance})
     })
     this.map.setView([57.15163209165796, 65.53978475553994], 15);
-    // this.selectedObject = this.objectsOptions[0];
-    // this.map.fitBounds(this.selectedObject.leafObject.getBounds());
   }
 
   onSelect() {
