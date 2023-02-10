@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import * as L from 'leaflet';
 // @ts-ignore
 import {objects} from "../assets/objects.js";
-import {LeafletEvent} from "leaflet";
 
 @Component({
   selector: 'app-root',
@@ -13,6 +12,7 @@ export class AppComponent {
   map!: L.Map;
   selectedObject!: { objectData: { id: number, coords: number[][] }, leafObject: any };
   objectsOptions!: { objectData: { id: number, coords: number[][] }, leafObject: any }[];
+  prevSelectedObject!: any
 
   ngOnInit() {
     console.log(document.querySelector('#map'))
@@ -30,17 +30,33 @@ export class AppComponent {
       else
         leafObjectInstance = L.polygon(objectData.coords)
       leafObjectInstance.addTo(this.map)
-      leafObjectInstance.on({click: this.onMapObjectClick})
+      leafObjectInstance.on({
+        click: (e) => {
+          this.focusObject(e.target)
+        }
+      })
       this.objectsOptions.push({objectData: objectData, leafObject: leafObjectInstance})
     })
-    this.selectedObject = this.objectsOptions[0];
+    this.map.setView([57.15163209165796, 65.53978475553994], 15);
+    // this.selectedObject = this.objectsOptions[0];
+    // this.map.fitBounds(this.selectedObject.leafObject.getBounds());
   }
 
-  onSelect(){
-    this.map.fitBounds(this.selectedObject.leafObject.getBounds())
+  onSelect() {
+    // this.map.fitBounds(this.selectedObject.leafObject.getBounds())
+    this.focusObject(this.selectedObject.leafObject);
   }
 
-  onMapObjectClick(event:LeafletEvent){
-    this.map.fitBounds(event.target.getBounds());
+  focusObject(leafObject: any) {
+
+    const result = this.objectsOptions.find(option=>option.leafObject === leafObject)
+    console.log(result);
+
+    this.map.fitBounds(leafObject.getBounds(), {maxZoom: 18});
+    leafObject.setStyle({color: "red"})
+    if (this.prevSelectedObject) {
+      this.prevSelectedObject.setStyle({color: "blue"})
+    }
+    this.prevSelectedObject = leafObject;
   }
 }
