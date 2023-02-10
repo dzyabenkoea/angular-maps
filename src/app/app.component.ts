@@ -10,7 +10,7 @@ import {objects} from "../assets/objects.js";
 })
 export class AppComponent {
   map!: L.Map;
-  selectedObject!: { objectData: { id: number, coords: number[][] }, leafObject: any };
+  selectedObject!: { objectData: { id: number, coords: number[][] }, leafObject: any } | null;
   objectsOptions!: { objectData: { id: number, coords: number[][] }, leafObject: any }[];
   prevSelectedObject!: any
 
@@ -44,13 +44,12 @@ export class AppComponent {
 
   onSelect() {
     // this.map.fitBounds(this.selectedObject.leafObject.getBounds())
-    this.focusObject(this.selectedObject.leafObject);
+    this.focusObject(this.selectedObject?.leafObject);
   }
 
   focusObject(leafObject: any) {
-
     const result = this.objectsOptions.find(option=>option.leafObject === leafObject)
-    console.log(result);
+    this.selectedObject = result || null;
 
     this.map.fitBounds(leafObject.getBounds(), {maxZoom: 18});
     leafObject.setStyle({color: "red"})
